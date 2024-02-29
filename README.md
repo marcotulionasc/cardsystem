@@ -53,14 +53,6 @@ Para usar o projeto Card System, basta seguir os seguintes passos:
 
 - Monte as rotas da API: `http://localhost:8089/request`
 
-## 📞 Contato
-
-
-Se você precisar de ajuda ou quiser reportar um problema, entre em contato com a equipe de desenvolvimento pelo seguinte endereço de email: equipe@hst.com.br
-
-Time responsável pelo projeto:
-
-![Imagem do Time](https://imgur.com/kByDjGw.png)
 
 ## 📚 Documentações do projeto
 
