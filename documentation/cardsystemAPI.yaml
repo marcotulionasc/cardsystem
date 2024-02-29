@@ -1,0 +1,584 @@
+#
+#  (c) COPYRIGHT 2023 HST EQUIPAMENTOS
+#  ELETRONICOS Ltda, Campinas (SP), Brasil
+#  ALL RIGHTS RESERVED - TODOS OS DIREITOS RESERVADOS
+#  CONFIDENTIAL, UNPUBLISHED PROPERTY OF HST E. E. Ltda
+#  PROPRIEDADE CONFIDENCIAL NAO PUBLICADA DA HST Ltda.
+#
+openapi: 3.0.1
+info:
+  title: CardSystem API
+  description: Esta API foi desenvolvida como parte prática do conteúdo visto e aprendido nas trilhas de conhecimento do programa de estágio.
+  version: v1.0.0.0
+
+servers:
+- url: http://localhost:8089
+  description: Generated server url
+tags:
+- name: Card
+  description: Responsible for requests related to cards.
+- name: User
+  description: Responsible for requests related to users.
+- name: Authentication
+  description: Responsible for authentication-related requests.
+  
+paths:
+  /users:
+    post:
+      tags:
+      - User
+      summary: Register new user
+      description: This request registers a new user.
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUserDTO'
+        required: true
+      responses:
+        400:
+          description: Information entered incorrectly.
+        201:
+          description: User registered successfully, returns data user.
+          content:
+            application/json: {}
+      security:
+      - bearer-key: []
+      
+  /cards/create:
+    post:
+      tags:
+      - Card
+      summary: Register new card
+      description: This request register a new card.
+      operationId: registerCard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterCardDTO'
+        required: true
+      responses:
+        201:
+          description: Card has been created, returns encrypted card data.
+          content:
+            application/json: {}
+        400:
+          description: This information was not found.
+      security:
+      - bearer-key: []
+      
+  /auth/register:
+    post:
+      tags:
+      - Authentication
+      summary: Register new user login
+      description: This request registers a new login to the system.
+      operationId: registerUser_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginDTO'
+        required: true
+      responses:
+        201:
+          description: User created with success.
+        400:
+          description: Information entered incorrectly or the login already exists in the system.
+          
+  /auth/login:
+    post:
+      tags:
+      - Authentication
+      summary: Login to the system
+      description: This request logs in a registered user.
+      operationId: loginUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginDTO'
+        required: true
+      responses:
+        202:
+          description: Logged in user, returns the authentication token.
+        406:
+          description: Information (login and/or password) entered incorrectly.
+          
+  /users/{id}:
+    get:
+      tags:
+      - User
+      summary: Details the user by id
+      description: This request details a user by id.
+      operationId: detailsUser
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the user to be detailed
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        404:
+          description: No user with this id was found.
+        200:
+          description: User found, returns the data of the user searched for by id.
+          content:
+            application/json: {}
+      security:
+      - bearer-key: []
+      
+    delete:
+      tags:
+      - User
+      summary: Inactive the user by id
+      description: This request inactive a user by id.
+      operationId: inactiveUser
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the user to be inactivated
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        404:
+          description: No user with this id was found.
+        204:
+          description: User successfully inactivated.
+      security:
+      - bearer-key: []
+      
+    patch:
+      tags:
+      - User
+      summary: Update the user by id
+      description: This request update a user by id.
+      operationId: updateUser
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the user to be updated
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDTO'
+        required: true
+      responses:
+        202:
+          description: User information has been updated, returns user data.
+          content:
+            application/json: {}
+        404:
+          description: No user with this id was found.
+      security:
+      - bearer-key: []
+      
+  /cards/{id}:
+    get:
+      tags:
+      - Card
+      summary: Details the card by id
+      description: This request details a card by id.
+      operationId: detailsCard
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        404:
+          description: Doesn't exists a data with this ID number.
+        200:
+          description: The card was found, returns the card data.
+          content:
+            application/json: {}
+      security:
+      - bearer-key: []
+    
+    delete:
+      tags:
+      - Card
+      summary: Delete the card by id
+      description: This request delete a card by id.
+      operationId: deleteCard
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the card to be deleted
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        204:
+          description: Card successfully deleted.
+        404:
+          description: Doesn't exist cards for this id.
+      security:
+      - bearer-key: []
+    
+    patch:
+      tags:
+      - Card
+      summary: Update the card by id user
+      description: This request update a card by id.
+      operationId: updateCard
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the card to be updated
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCardDTO'
+        required: true
+      responses:
+        202:
+          description: User information has been updated, returns user data.
+          content:
+            application/json: {}
+        404:
+          description: Doesn't exists a data with this ID number.
+      security:
+      - bearer-key: []
+      
+  /users/status:
+    get:
+      tags:
+      - User
+      summary: Search user by status
+      description: This request search a user by activity status.
+      operationId: userByStatus
+      parameters:
+      - name: active
+        in: query
+        required: true
+        schema:
+          type: boolean
+      responses:
+        200:
+          description: Users were found, returns the list of users with requested status.
+          content:
+            application/json: {}
+        404:
+          description: There are no users with the requested status.
+      security:
+      - bearer-key: []
+      
+  /users/salary:
+    get:
+      tags:
+      - User
+      summary: Search user by salary
+      description: This request search a user by salary range.
+      operationId: userBySalary
+      parameters:
+      - name: min
+        in: query
+        required: true
+        schema:
+          type: number
+      - name: max
+        in: query
+        required: true
+        schema:
+          type: number
+      responses:
+        200:
+          description: Users were found, returns the list of users with requested salary range.
+        404:
+          description: There are no users with the requested salary range.
+      security:
+      - bearer-key: []
+      
+  /users/cards/{id}:
+    get:
+      tags:
+      - User
+      summary: Search for cards using user ID
+      description: This request searches for user cards using the user id.
+      operationId: cardsOfUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Cards were found, returns the list of cards according to the requested user id.
+          content:
+            application/json: {}
+        404:
+          description: Doesn't exist cards for this id.
+      security:
+      - bearer-key: []
+      
+  /cards/card:
+    get:
+      tags:
+      - Card
+      summary: List cards by brand
+      description: This request list cards by brand.
+      operationId: listOfCardsByBrand
+      parameters:
+      - name: brand
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - VISA
+          - MASTERCARD
+          - ELO
+          - AMEX
+          - DINERS
+          - HIPERCARD
+          - DISCOVER
+      responses:
+        404:
+          description: Doesn't exist cards for this brand.
+        200:
+          description: Cards were found, returns list of cards by brand.
+          content:
+            application/json: {}
+      security:
+      - bearer-key: []
+      
+components:
+  schemas:
+    AddressDTO:
+      required:
+      - cep
+      - neighborhood
+      - street
+      type: object
+      properties:
+        street:
+          type: string
+          description: Street
+          example: Rua José Inácio da Silva
+        numberAddress:
+          type: string
+          description: Number address
+          example: 622
+        neighborhood:
+          type: string
+          description: Neighborhood
+          example: Parque das Árvores
+        cep:
+          pattern: '\d{8}'
+          type: string
+          description: CEP
+          example: 69309030
+        uf:
+          type: string
+          enum:
+          - RS
+          - DF
+          - GO
+          - MS
+          - TO
+          - PA
+          - AM
+          - AP
+          - RO
+          - RR
+          - CE
+          - MA
+          - PI
+          - PE
+          - RN
+          - PB
+          - AL
+          - BA
+          - SE
+          - MG
+          - RJ
+          - ES
+          - SP
+          - PR
+          - SC
+        complement:
+          type: string
+          description: Complement
+          example: Apartamento 84B
+    RegisterUserDTO:
+      required:
+      - contactNumber
+      - cpf
+      - name
+      - occupation
+      type: object
+      properties:
+        name:
+          type: string
+          description: User name
+          example: João da Silva
+        cpf:
+          type: string
+          description: User cpf
+          example: 387.293.062-13
+        contactNumber:
+          type: string
+          description: User contact number
+          example: (19) 98866-1339
+        civilStatus:
+          type: string
+          enum:
+          - SINGLE
+          - MARRIED
+          - DIVORCED
+          - WIDOWED
+        birthdate:
+          pattern: ^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/(19\d\d|20[01]\d|202[0-2])$
+          type: string
+          description: User birthdate
+          example: 13/08/1980
+        occupation:
+          type: string
+          description: User occupation
+          example: Software developer
+        salary:
+          type: number
+          description: User salary
+          example: 2500
+        address:
+          $ref: '#/components/schemas/AddressDTO'
+    RegisterCardDTO:
+      required:
+      - cardBrand
+      - cvv
+      - numberCard
+      - userId
+      type: object
+      properties:
+        numberCard:
+          pattern: ^\d{4} \d{4} \d{4} \d{4}$
+          type: string
+          description: Number card
+          example: 5443 3840 8887 8311
+        cardBrand:
+          type: string
+          description: Card brand
+          example: VISA
+          enum:
+          - VISA
+          - MASTERCARD
+          - ELO
+          - AMEX
+          - DINERS
+          - HIPERCARD
+          - DISCOVER
+        cvv:
+          type: string
+          description: CVV card
+          example: 123
+        userId:
+          type: integer
+          description: User id
+          format: int64
+          example: 1
+    UserLoginDTO:
+      required:
+      - login
+      - password
+      type: object
+      properties:
+        login:
+          type: string
+          description: User login
+          example: hst@hst.com.br
+        password:
+          type: string
+          description: User password
+          example: 1234567
+    UpdateUserDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User name
+          example: João da Silva
+        contactNumber:
+          pattern: ^\(\d{2}\) \d{4,5}-\d{4}$
+          type: string
+          description: User contact number
+          example: (19) 98866-1339
+        civilStatus:
+          type: string
+          enum:
+          - SINGLE
+          - MARRIED
+          - DIVORCED
+          - WIDOWED
+        birthdate:
+          pattern: ^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/(19\d\d|20[01]\d|202[0-2])$
+          type: string
+          description: User birthdate
+          example: 13/08/1980
+        occupation:
+          type: string
+          description: User occupation
+          example: Software developer
+        salary:
+          type: number
+          description: User salary
+          example: 2500
+        address:
+          $ref: '#/components/schemas/AddressDTO'
+    UpdateCardDTO:
+      required:
+      - cvv
+      - numberCard
+      type: object
+      properties:
+        numberCard:
+          pattern: ^\d{4} \d{4} \d{4} \d{4}$
+          type: string
+          description: Number card
+          example: 5443 3840 8887 8311
+        cardBrand:
+          type: string
+          description: Card brand
+          example: VISA
+          enum:
+          - VISA
+          - MASTERCARD
+          - ELO
+          - AMEX
+          - DINERS
+          - HIPERCARD
+          - DISCOVER
+        dateExpiration:
+          type: string
+          description: Date expiration card
+          format: date
+        cvv:
+          type: string
+          description: CVV card
+          example: 123
+  securitySchemes:
+    bearer-key:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  local-postgres-compose:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: "cardsystem"
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - postgres-compose-network
+
+networks:
+  postgres-compose-network:
+    driver: bridge

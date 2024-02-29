@@ -1,0 +1,18 @@
+
+J
+java:S3740="/Provide the parametrized type for this generic.(Ö©ÉÆ˘ˇˇˇˇ
+J
+java:S3740Y"/Provide the parametrized type for this generic.(ﬂ˙à˜˙ˇˇˇˇ
+E
+java:S3740c"/Provide the parametrized type for this generic.(Â´≠≥
+k	java:S117^"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(˘ëÉÛ˝ˇˇˇˇ
+X
+java:S6813&"BRemove this field injection and use constructor injection instead.(ÍÊƒﬁ
+X
+java:S6813)"BRemove this field injection and use constructor injection instead.(ÍÊƒﬁ
+X
+java:S6813,"BRemove this field injection and use constructor injection instead.(ÍÊƒﬁ
+M
+java:S1854a"7Remove this useless assignment to local variable "uri".(Ó÷Ã€
+>
+java:S1481a"(Remove this unused "uri" local variable.(Ó÷Ã€
